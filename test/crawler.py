@@ -62,7 +62,7 @@ def parser(urls):
                     i = i + 5
                 else:
                     i = i + 1
-            result_year = 123123
+            result_year = 
 
 
             print(result_year)
