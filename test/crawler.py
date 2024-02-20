@@ -62,7 +62,9 @@ def parser(urls):
                     i = i + 5
                 else:
                     i = i + 1
-            result_year = 
+            result_year = 123123
+
+
             print(result_year)
             #测试环境下仅提取一份数据
             break
