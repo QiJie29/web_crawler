@@ -48,21 +48,21 @@ def parser(urls):
                 # print(contents[i].get_text())
                 #匹配当前标签内容为数据序列号，按照网页规则提取相应内容
                 if contents[i].get_text() == str(count):
-                    # print(contents[i].get_text() + " " + contents[i + 1].get_text() + " " + contents[i + 3].get_text())
+                    print(contents[i].get_text() + " " + contents[i + 1].get_text() + " " + contents[i + 3].get_text())
                     count = count + 1
-                    list = list()
-                    list.append(contents[i].get_text())
-                    list.append(contents[i+1].get_text())
-                    list.append(contents[i+3].get_text())
+                    # list = list()
+                    # list.append(contents[i].get_text())
+                    # list.append(contents[i+1].get_text())
+                    # list.append(contents[i+3].get_text())
 
-                    json_str = json.dumps(result_year)
+                    # json_str = json.dumps(result_year)
 
 
-                    json.dump(result_year.update(axis),result_year)
+                    # json.dump(result_year.update(axis),result_year)
                     i = i + 5
                 else:
                     i = i + 1
-            result_year = 
+            # result_year =
 
 
             print(result_year)
