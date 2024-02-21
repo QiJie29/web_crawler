@@ -3,5 +3,5 @@ from bs4 import BeautifulSoup
 import selenium
 
 print("ok")
-str = ["1","3","4"]
-print(len(str))
+print(chr(100))
+print(chr(101))
