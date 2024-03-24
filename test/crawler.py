@@ -11,36 +11,33 @@ def extract_data(input_string):
     if match:
         return match.group(1)
     else:
-        return None
+        return input_string
 
 
 def getUrls():
     # 定义超链接内容
     base_url = "https://www.kylc.com/stats/global/yearly/"
-    kind_url = "g_gdp/"
+    kind_url = "g_area_agriculture_land_perc/"
     year_min = 1960
     year_max = 2024
     suffix_url = ".html"
-
     # 定义urls数组用于存储超链接
     urls = list()
-
     # 循环遍历所有年份
     while year_min <= year_max:
         urls.append(base_url + kind_url + str(year_min) + suffix_url)
         year_min = year_min + 1
     return urls
-
-
 def parser(urls):
     # 复制excel的sheet页面
-    wb = openpyxl.load_workbook("../template.xlsx")
+    wb = openpyxl.load_workbook("../动态数据排行榜模板.xlsx")
     # 提取模板sheet对象
-    sheet_to_copy = wb["template data"]
+    sheet_to_copy = wb["爬取数据"]
     # 新建sheet
     new_sheet = wb.copy_worksheet(sheet_to_copy)
     # 重命名
-    new_sheet.title = "result_data"
+    # new_sheet.title = input("请输入本次抓取的数据类型：")
+    new_sheet.title = "52.世界各国农业用地占土地面积比重"
     # 定义初始化colIndex
     col_index = 3
     # 遍历urls数组
@@ -64,12 +61,12 @@ def parser(urls):
             # 提取当前页面年份作为列名
             col_index = col_index + 1
             title = soup.find("title").get_text()
-            print(title[0:4])
+            print("开始爬取该年份数据：" + title[0:4])
             year = title[0:4]
             new_sheet.cell(1, col_index).value = year
-            # print(len(contents))
+            # print("获取页面的标签总长度数量：" + str(len(contents)))
             while i < len(contents):
-                # print(contents[i].get_text())
+                # print("页面中的标签的内容：" + contents[i].get_text())
                 # 匹配当前标签内容为数据序列号，按照网页规则提取相应内容
                 if contents[i].get_text() == str(count):
                     # print(contents[i].get_text() + " " + contents[i + 1].get_text() + " " + contents[i + 3].get_text())
@@ -79,11 +76,14 @@ def parser(urls):
                     # 循环匹配国家名称
                     while row_min <= row_max:
                         # 国家名称匹配成功后，将其数据填写至后方相应列中
-                        # print(new_sheet['A' + str(row_min)].value+ contents[i + 1].get_text())
+                        # print(new_sheet['A' + str(row_min)].value + "???" + contents[i + 1].get_text())
                         if new_sheet['A' + str(row_min)].value == contents[i + 1].get_text():
                             # 提取括号内数据
+                            # print(new_sheet['A' + str(row_min)].value + contents[i + 1].get_text())
+                            # print(contents[i + 3].get_text())
                             # print(extract_data(contents[i + 3].get_text()))
                             new_sheet.cell(row_min, col_index).value = extract_data(contents[i + 3].get_text())
+                            print("数据写入完成："+contents[i].get_text() + " " + contents[i + 1].get_text() + " " + contents[i + 3].get_text())
                             break
                         else:
                             row_min = row_min + 1
@@ -94,15 +94,16 @@ def parser(urls):
                                           i + 3].get_text())
                     # 计数+1
                     count = count + 1
-                    i = i + 5
+                    i = i + 1
                 else:
                     i = i + 1
             # 测试环境下仅提取一份数据
             # break
         else:
+            print("未找到该年份下数据：" + url)
             continue
     # 保存文件
-    wb.save("result.xlsx")
+    wb.save("../动态数据排行榜模板.xlsx")
 
 
 if __name__ == '__main__':
